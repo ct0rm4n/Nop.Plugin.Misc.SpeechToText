@@ -1,0 +1,85 @@
+@model Nop.Plugin.Misc.SpeechToText.Models.ConfigurationModel
+@{
+    Layout = "_ConfigurePlugin";
+}
+
+@await Component.InvokeAsync(typeof(StoreScopeConfigurationViewComponent))
+
+<form asp-controller="MiscSpeechToText" asp-action="Configure" method="post">
+    <div class="cards-group">
+        <div class="card card-default">
+            <div class="card-body">
+                @Html.Raw(T("Plugins.Misc.SpeechToText.Instructions").Text)
+            </div>
+        </div>
+        <div class="card card-default">
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="AutoSubmitSearch_OverrideForStore" asp-input="AutoSubmitSearch" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="AutoSubmitSearch" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="AutoSubmitSearch" />
+                        <span asp-validation-for="AutoSubmitSearch"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="EnableVoiceCommands_OverrideForStore" asp-input="EnableVoiceCommands" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="EnableVoiceCommands" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EnableVoiceCommands" />
+                        <span asp-validation-for="EnableVoiceCommands"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <nop-override-store-checkbox asp-for="EnableServerFallback_OverrideForStore" asp-input="EnableServerFallback" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                        <nop-label asp-for="EnableServerFallback" />
+                    </div>
+                    <div class="col-md-9">
+                        <nop-editor asp-for="EnableServerFallback" />
+                        <span asp-validation-for="EnableServerFallback"></span>
+                    </div>
+                </div>
+                <nop-nested-setting asp-for="EnableServerFallback">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-override-store-checkbox asp-for="WhisperModelPath_OverrideForStore" asp-input="WhisperModelPath" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                            <nop-label asp-for="WhisperModelPath" />
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="WhisperModelPath" />
+                            <span asp-validation-for="WhisperModelPath"></span>
+                            @if (Model.WhisperModelFound)
+                            {
+                                <div class="text-success mt-1">@T("Plugins.Misc.SpeechToText.WhisperModelPath.Found")</div>
+                            }
+                            else
+                            {
+                                <div class="text-warning mt-1">@T("Plugins.Misc.SpeechToText.WhisperModelPath.NotFound")</div>
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <nop-override-store-checkbox asp-for="MaxRecordingSeconds_OverrideForStore" asp-input="MaxRecordingSeconds" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+                            <nop-label asp-for="MaxRecordingSeconds" />
+                        </div>
+                        <div class="col-md-9">
+                            <nop-editor asp-for="MaxRecordingSeconds" />
+                            <span asp-validation-for="MaxRecordingSeconds"></span>
+                        </div>
+                    </div>
+                </nop-nested-setting>
+                <div class="form-group row">
+                    <div class="col-md-9 offset-md-3">
+                        <button type="submit" name="save" class="btn btn-primary">@T("Admin.Common.Save")</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

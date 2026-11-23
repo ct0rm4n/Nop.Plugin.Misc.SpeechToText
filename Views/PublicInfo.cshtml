@@ -1,0 +1,24 @@
+@model object
+@{
+    Layout = "";
+    // Fica num atributo da div (o Razor faz o encode): o nop move/agrupa todas as tags <script> no
+    // rodapé e o speech-to-text.js rodaria antes de um <script type="application/json"> de configuração
+    var configJson = System.Text.Json.JsonSerializer.Serialize(Model);
+}
+
+<link rel="stylesheet" href="~/Plugins/Misc.SpeechToText/Content/speech-to-text.css" asp-append-version="true" />
+
+<div id="stt-config"
+     data-config="@configJson"
+     data-transcribe-url="@Url.RouteUrl(Nop.Plugin.Misc.SpeechToText.SpeechToTextDefaults.TranscribeRouteName)"
+     data-search-url="@Url.RouteUrl("ProductSearch")"
+     data-cart-url="@Url.RouteUrl("ShoppingCart")"
+     data-wishlist-url="@Url.RouteUrl("Wishlist")"
+     data-account-url="@Url.RouteUrl("CustomerInfo")"
+     data-login-url="@Url.RouteUrl("Login")"
+     data-home-url="@Url.RouteUrl("Homepage")"
+     hidden>
+    @Html.AntiForgeryToken()
+</div>
+
+<script src="~/Plugins/Misc.SpeechToText/Content/speech-to-text.js" asp-append-version="true"></script>

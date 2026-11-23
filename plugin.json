@@ -1,0 +1,11 @@
+{
+  "Group": "Misc",
+  "FriendlyName": "Speech to Text (voice search)",
+  "SystemName": "Misc.SpeechToText",
+  "Version": "1.10",
+  "SupportedVersions": [ "4.60" ],
+  "Author": "Sua loja",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Misc.SpeechToText.dll",
+  "Description": "Voice search for your store: a microphone button next to the search box turns speech into text in the customer's language (browser Web Speech API + optional offline Whisper.net fallback). Multi-language, voice commands, auto-search option."
+}

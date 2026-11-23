@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Copyright>Copyright © Sua loja</Copyright>
+    <OutputPath>..\..\Presentation\Nop.Web\Plugins\Misc.SpeechToText</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+    <!-- Necessário para o nopCommerce copiar as dependências NuGet (Whisper.net) para a pasta do plugin -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="plugin.json" />
+    <None Remove="Views\**" />
+    <None Remove="Content\**" />
+    <Content Include="plugin.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Presentation\Nop.Web.Framework\Nop.Web.Framework.csproj" />
+    <ClearPluginAssemblies Include="$(MSBuildProjectDirectory)\..\..\Build\ClearPluginAssemblies.proj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Gratuitos / MIT. Whisper roda 100% local, sem API paga -->
+    <!-- Fixo em 1.7.2: última versão com alvo net6.0 (sem dependências). A partir da 1.7.3 o net7 cai no
+         netstandard2.0, que exige Microsoft.Bcl.AsyncInterfaces 9.0 e conflita com a 6.0 já carregada pelo nop -->
+    <PackageReference Include="Whisper.net" Version="1.7.2" />
+    <PackageReference Include="Whisper.net.Runtime" Version="1.7.2" />
+  </ItemGroup>
+
+  <!-- Remove do output as DLLs que o nopCommerce já carrega -->
+  <Target Name="NopTarget" AfterTargets="Build">
+    <MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
+  </Target>
+
+</Project>
